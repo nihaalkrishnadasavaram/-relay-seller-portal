@@ -1,4 +1,3 @@
-import API_BASE from './api'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
@@ -63,7 +62,7 @@ export default function BuyerHandover() {
 
     try {
       const response = await fetch(
-        `${API_BASE}/api/handovers/${encodeURIComponent(id)}/accept`,
+        `http://localhost:5000/api/handovers/${encodeURIComponent(id)}/accept`,
         {
           method: 'PATCH',
         }

@@ -1,4 +1,3 @@
-import API_BASE from './api'
 import { useState, useEffect } from 'react'
 import {
     ArrowLeft,
@@ -56,7 +55,7 @@ export default function Handover() {
         const loadHandovers = async () => {
             try {
                 const response = await fetch(
-                    `${API_BASE}/api/handovers`
+                    `http://localhost:5000/api/handovers`
                 )
 
                 if (!response.ok) {
@@ -109,7 +108,7 @@ export default function Handover() {
         saveHandovers([newHandover, ...handovers])
 
         try {
-            const response = await fetch(`${API_BASE}/api/handovers`, {
+            const response = await fetch(`http://localhost:5000/api/handovers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -154,7 +153,7 @@ export default function Handover() {
 
         try {
             const response = await fetch(
-                `${API_BASE}/api/handovers/${encodeURIComponent(item.id)}/complete`,
+                `http://localhost:5000/api/handovers/${encodeURIComponent(item.id)}/complete`,
                 {
                     method: 'PATCH',
                 }

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import API_BASE from './api'
 import QRCode from 'qrcode'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import PublicRecord from './PublicRecord'
@@ -73,7 +72,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadVehicles = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/vehicles`)
+        const response = await fetch(`http://localhost:5000/api/vehicles`)
 
         if (!response.ok) {
           throw new Error('Failed to load vehicles')
@@ -86,7 +85,7 @@ function SellerDashboard() {
           localStorage.setItem('relayVehicles', JSON.stringify(backendVehicles))
         } else if (vehicleList.length > 0) {
           for (const vehicle of vehicleList) {
-            await fetch(`${API_BASE}/api/vehicles`, {
+            await fetch(`http://localhost:5000/api/vehicles`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +104,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/settings`)
+        const response = await fetch(`http://localhost:5000/api/settings`)
 
         if (!response.ok) {
           throw new Error('Failed to load settings')
@@ -134,7 +133,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadRelayRecords = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/records`)
+        const response = await fetch(`http://localhost:5000/api/records`)
 
         if (!response.ok) {
           throw new Error('Failed to load RELAY records')
@@ -205,7 +204,7 @@ function SellerDashboard() {
     if (existingRecord) {
       try {
         const backendResponse = await fetch(
-          `${API_BASE}/api/records`
+          `http://localhost:5000/api/records`
         )
 
         const backendRecords = await backendResponse.json()
@@ -215,7 +214,7 @@ function SellerDashboard() {
         )
 
         if (!alreadySaved) {
-          await fetch(`${API_BASE}/api/records`, {
+          await fetch(`http://localhost:5000/api/records`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -255,7 +254,7 @@ function SellerDashboard() {
       createdAt: new Date().toLocaleDateString('en-IN'),
       careScore: vehicle.score || 0,
       odometerStatus: 'Not verified',
-      publicUrl: `${window.location.origin}/r/${recordId}`,
+      publicUrl: `http://localhost:5173/r/${recordId}`,
     }
 
     const updatedRecords = [...savedRecords, newRecord]
@@ -265,7 +264,7 @@ function SellerDashboard() {
       JSON.stringify(updatedRecords)
     )
     try {
-      const response = await fetch(`${API_BASE}/api/records`, {
+      const response = await fetch(`http://localhost:5000/api/records`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -329,7 +328,7 @@ function SellerDashboard() {
 
     try {
       const response = await fetch(
-        `${API_BASE}/api/records/${encodeURIComponent(recordId)}`,
+        `http://localhost:5000/api/records/${encodeURIComponent(recordId)}`,
         {
           method: 'DELETE',
         }
@@ -398,7 +397,7 @@ function SellerDashboard() {
 
       try {
         const response = await fetch(
-          `${API_BASE}/api/vehicles/${encodeURIComponent(updatedVehicle.registration)}`,
+          `http://localhost:5000/api/vehicles/${encodeURIComponent(updatedVehicle.registration)}`,
           {
             method: 'PUT',
             headers: {
@@ -444,7 +443,7 @@ function SellerDashboard() {
 
     try {
       const response = await fetch(
-        `${API_BASE}/api/vehicles/${encodeURIComponent(vehicle.registration)}`,
+        `http://localhost:5000/api/vehicles/${encodeURIComponent(vehicle.registration)}`,
         {
           method: 'DELETE',
         }
@@ -466,7 +465,7 @@ function SellerDashboard() {
     localStorage.setItem('relaySmsNotifications', String(smsNotifications))
 
     try {
-      const response = await fetch(`${API_BASE}/api/settings`, {
+      const response = await fetch(`http://localhost:5000/api/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -1025,7 +1024,7 @@ function SellerDashboard() {
                   localStorage.setItem('relayVehicles', JSON.stringify(updatedVehicles))
 
                   try {
-                    const response = await fetch(`${API_BASE}/api/vehicles`, {
+                    const response = await fetch(`http://localhost:5000/api/vehicles`, {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
@@ -1236,8 +1235,10 @@ function SellerDashboard() {
                   {/* Add Service Form */}
                   {showServiceForm && (
                     <form
-                      onSubmit={(e) => {
+
+                      onSubmit={async (e) => {
                         e.preventDefault()
+
                         const formData = new FormData(e.target)
 
                         const newService = {
@@ -1253,25 +1254,45 @@ function SellerDashboard() {
                           services: [...(selectedVehicle.services || []), newService],
                         }
 
-                        setVehicleList((previous) => {
-                          const updatedVehicles = previous.map((vehicle) =>
-                            vehicle.registration === selectedVehicle.registration
+                        try {
+                          const response = await fetch(
+                            `http://localhost:5000/api/vehicles/${encodeURIComponent(updatedVehicle.registration)}`,
+                            {
+                              method: 'PUT',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(updatedVehicle),
+                            }
+                          )
+
+                          if (!response.ok) {
+                            throw new Error('Failed to save service record')
+                          }
+
+                          const updatedVehicles = vehicleList.map((vehicle) =>
+                            vehicle.registration === updatedVehicle.registration
                               ? updatedVehicle
                               : vehicle
                           )
+
+                          setVehicleList(updatedVehicles)
 
                           localStorage.setItem(
                             'relayVehicles',
                             JSON.stringify(updatedVehicles)
                           )
 
-                          return updatedVehicles
-                        })
+                          setSelectedVehicle(updatedVehicle)
+                          setShowServiceForm(false)
+                          e.target.reset()
 
-                        setSelectedVehicle(updatedVehicle)
-                        setShowServiceForm(false)
-                        e.target.reset()
+                        } catch (error) {
+                          console.error('Service record saving error:', error)
+                          alert('Failed to save service record. Please try again.')
+                        }
                       }}
+
                       className="mx-6 mb-6 grid gap-4 rounded-2xl border border-blue-100 bg-blue-50/50 p-5 sm:grid-cols-2"
                     >
                       <div className="sm:col-span-2">
