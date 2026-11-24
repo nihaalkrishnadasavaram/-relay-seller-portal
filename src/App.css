@@ -1,0 +1,220 @@
+
+/* =========================================
+   RELAY SELLER PORTAL — PREMIUM DESIGN
+   ========================================= */
+
+.relay-theme {
+  min-height: 100vh;
+  background: #f4f7fc !important;
+  color: #172033;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Main workspace */
+.relay-theme > main {
+  background: #f4f7fc;
+}
+
+/* Sidebar */
+.relay-theme > aside {
+  background: linear-gradient(180deg, #101c35 0%, #172747 100%) !important;
+  border-right: 1px solid #263958 !important;
+  box-shadow: 8px 0 30px rgba(15, 23, 42, 0.12) !important;
+  color: #fff !important;
+}
+
+.relay-theme > aside h1,
+.relay-theme > aside h2,
+.relay-theme > aside h3,
+.relay-theme > aside p,
+.relay-theme > aside span {
+  color: inherit;
+}
+
+.relay-theme > aside .text-slate-900,
+.relay-theme > aside .text-slate-800,
+.relay-theme > aside .text-slate-700 {
+  color: #f1f5f9 !important;
+}
+
+.relay-theme > aside .text-slate-500,
+.relay-theme > aside .text-slate-400 {
+  color: #9aabc5 !important;
+}
+
+.relay-theme > aside nav button {
+  color: #c4d0e2 !important;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.relay-theme > aside nav button:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  color: #fff !important;
+}
+
+.relay-theme > aside nav button.bg-blue-50 {
+  background: linear-gradient(100deg, #2563eb, #3b82f6) !important;
+  color: #fff !important;
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.25);
+}
+
+.relay-theme > aside .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.relay-theme > aside .bg-blue-50 {
+  background: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Header */
+.relay-theme > main > header {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: #e7edf5 !important;
+  backdrop-filter: blur(14px);
+}
+
+/* Workspace spacing */
+.relay-theme > main > div.p-5 {
+  padding: 32px !important;
+}
+
+/* Cards and panels */
+.relay-theme .rounded-2xl.border,
+.relay-theme .rounded-xl.border {
+  border-color: #e5ebf4 !important;
+  box-shadow: 0 5px 20px rgba(15, 35, 70, 0.045);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.relay-theme .rounded-2xl.border:hover {
+  box-shadow: 0 10px 28px rgba(15, 35, 70, 0.075);
+}
+
+/* Buttons */
+.relay-theme button {
+  transition: all 0.2s ease;
+}
+
+.relay-theme button:active {
+  transform: scale(0.98);
+}
+
+.relay-theme button.bg-blue-600,
+.relay-theme button.bg-blue-700 {
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.relay-theme button.bg-blue-600:hover,
+.relay-theme button.bg-blue-700:hover {
+  filter: brightness(1.08);
+}
+
+/* Inputs */
+.relay-theme input,
+.relay-theme select,
+.relay-theme textarea {
+  border-color: #dce4ef !important;
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.relay-theme input:focus,
+.relay-theme select:focus,
+.relay-theme textarea:focus {
+  outline: none;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+/* Dashboard headings */
+.relay-theme h1,
+.relay-theme h2,
+.relay-theme h3 {
+  letter-spacing: -0.025em;
+}
+
+/* Progress bars */
+.relay-theme .h-2.rounded-full {
+  overflow: hidden;
+}
+
+/* Status pills */
+.relay-theme .rounded-full {
+  letter-spacing: 0.01em;
+}
+
+/* Modal overlay */
+.relay-theme .fixed.inset-0 {
+  backdrop-filter: blur(5px);
+}
+
+/* Smooth page appearance */
+.relay-theme > main > div {
+  animation: relayFadeIn 0.35s ease both;
+}
+
+@keyframes relayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive layout */
+@media (max-width: 767px) {
+  .relay-theme > main {
+    margin-left: 0 !important;
+  }
+
+  .relay-theme > main > div.p-5 {
+    padding: 18px !important;
+  }
+
+  .relay-theme > main > header {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+/* Add Vehicle Modal Position Fix */
+.relay-theme .fixed.inset-0 {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.relay-theme .fixed.inset-0 > div {
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  margin: auto;
+}
+
+/* FINAL FIX — Keep Add Vehicle modal above dashboard cards */
+
+.relay-theme .fixed.inset-0 {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999999 !important;
+}
+
+/* Prevent dashboard animation from creating a competing layer */
+.relay-theme > main > div {
+  animation: none !important;
+}
+
+/* Keep modal content within the screen */
+.relay-theme .fixed.inset-0 > div {
+  position: relative;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  margin: auto;
+}
