@@ -255,7 +255,7 @@ function SellerDashboard() {
       createdAt: new Date().toLocaleDateString('en-IN'),
       careScore: vehicle.score || 0,
       odometerStatus: 'Not verified',
-      publicUrl: `http://localhost:5173/r/${recordId}`,
+      publicUrl: `${window.location.origin}/r/${recordId}`,
     }
 
     const updatedRecords = [...savedRecords, newRecord]
