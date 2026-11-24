@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import API_BASE from './api'
 import QRCode from 'qrcode'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import PublicRecord from './PublicRecord'
@@ -72,7 +73,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadVehicles = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/vehicles')
+        const response = await fetch(`${API_BASE}/api/vehicles`)
 
         if (!response.ok) {
           throw new Error('Failed to load vehicles')
@@ -85,7 +86,7 @@ function SellerDashboard() {
           localStorage.setItem('relayVehicles', JSON.stringify(backendVehicles))
         } else if (vehicleList.length > 0) {
           for (const vehicle of vehicleList) {
-            await fetch('http://localhost:5000/api/vehicles', {
+            await fetch(`${API_BASE}/api/vehicles`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/settings')
+        const response = await fetch(`${API_BASE}/api/settings`)
 
         if (!response.ok) {
           throw new Error('Failed to load settings')
@@ -133,7 +134,7 @@ function SellerDashboard() {
   useEffect(() => {
     const loadRelayRecords = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/records')
+        const response = await fetch(`${API_BASE}/api/records`)
 
         if (!response.ok) {
           throw new Error('Failed to load RELAY records')
@@ -204,7 +205,7 @@ function SellerDashboard() {
     if (existingRecord) {
       try {
         const backendResponse = await fetch(
-          'http://localhost:5000/api/records'
+          `${API_BASE}/api/records`
         )
 
         const backendRecords = await backendResponse.json()
@@ -214,7 +215,7 @@ function SellerDashboard() {
         )
 
         if (!alreadySaved) {
-          await fetch('http://localhost:5000/api/records', {
+          await fetch(`${API_BASE}/api/records`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -264,7 +265,7 @@ function SellerDashboard() {
       JSON.stringify(updatedRecords)
     )
     try {
-      const response = await fetch('http://localhost:5000/api/records', {
+      const response = await fetch(`${API_BASE}/api/records`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -328,7 +329,7 @@ function SellerDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/records/${encodeURIComponent(recordId)}`,
+        `${API_BASE}/api/records/${encodeURIComponent(recordId)}`,
         {
           method: 'DELETE',
         }
@@ -397,7 +398,7 @@ function SellerDashboard() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/vehicles/${encodeURIComponent(updatedVehicle.registration)}`,
+          `${API_BASE}/api/vehicles/${encodeURIComponent(updatedVehicle.registration)}`,
           {
             method: 'PUT',
             headers: {
@@ -443,7 +444,7 @@ function SellerDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/vehicles/${encodeURIComponent(vehicle.registration)}`,
+        `${API_BASE}/api/vehicles/${encodeURIComponent(vehicle.registration)}`,
         {
           method: 'DELETE',
         }
@@ -465,7 +466,7 @@ function SellerDashboard() {
     localStorage.setItem('relaySmsNotifications', String(smsNotifications))
 
     try {
-      const response = await fetch('http://localhost:5000/api/settings', {
+      const response = await fetch(`${API_BASE}/api/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -1024,7 +1025,7 @@ function SellerDashboard() {
                   localStorage.setItem('relayVehicles', JSON.stringify(updatedVehicles))
 
                   try {
-                    const response = await fetch('http://localhost:5000/api/vehicles', {
+                    const response = await fetch(`${API_BASE}/api/vehicles`, {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
